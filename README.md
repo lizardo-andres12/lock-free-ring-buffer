@@ -64,11 +64,11 @@ Then write a test program that:
 If `head_` and `tail_` are on the same cache line, the producer and consumer will fight over it:
 
 ```cpp
-alignas(std::hardware_destructive_interference_size) std::atomic<size_t> head_;  // Own cache line
-alignas(std::hardware_destructive_interference_size) std::atomic<size_t> tail_;  // Own cache line
+alignas(64) std::atomic<size_t> head_;  // Own cache line
+alignas(64) std::atomic<size_t> tail_;  // Own cache line
 ```
 
-`std::hardware_destructive_interference_size` is a constant that represents the minimum offset between two memory addresses to ensure they do not reside on the same cache line, thus preventing false sharing.
+Cache lines are typically 64 bytes. `alignas(64)` ensures they don't share.
 
 ---
 
